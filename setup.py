@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
    name		= 'emote_grabber',
-   version	= '1.6',
+   version	= '1.8',
    packages	= ['emote_grabber'],
    package_dir	= {'': '.'},
    author	= 'askmartyn',

@@ -1,5 +1,5 @@
 from flask import Flask
-from emote_grabber.emote_grabber import emote_grabber 
+from emote_grabber.grabber import emote_grabber 
 app = Flask(__name__)
 
 
