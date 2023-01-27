@@ -2,10 +2,13 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 class emote_grabber(object):
     def __init__(self, channel_name=None):
-       self.driver = webdriver.Chrome()
+       self.options = Options()
+       self.options.add_argument("--headless")
+       self.driver = webdriver.Chrome(options=self.options)
        self.channel_name = channel_name
        self.channel_url = None
        self.emotes      = None 
