@@ -2,13 +2,13 @@ from time import sleep
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 
 class emote_grabber(object):
     def __init__(self, channel_name=None):
        self.options = Options()
-       self.options.add_argument("--headless")
-       self.driver = webdriver.Chrome(options=self.options)
+       #self.options.add_argument("--headless")
+       self.driver = webdriver.Firefox(options=self.options)
        self.channel_name = channel_name
        self.channel_url = None
        self.emotes      = None 
@@ -25,9 +25,10 @@ class emote_grabber(object):
           self.channel_url = None
           self.channel_name = channel_name
        self.driver.get('https://twitchemotes.com/')
-       search_bar = self.driver.find_element(By.NAME, 'query')
+       search_bar = self.driver.find_element(By.CSS_SELECTOR, "input")
        search_bar.send_keys(self.channel_name)
-       search_bar.send_keys(Keys.RETURN)
+       button = clickable = self.driver.find_element(By.CLASS_NAME, "btn")
+       button.click()
        self.channel_url = self.driver.current_url
        return self.driver.current_url
     
