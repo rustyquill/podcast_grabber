@@ -1,9 +1,8 @@
-from time import sleep 
+import subprocess
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
-from time import sleep
 
 class emote_grabber(object):
     def __init__(self, channel_name=None):
@@ -33,9 +32,12 @@ class emote_grabber(object):
        self.channel_url = self.driver.current_url
        return self.driver.current_url
     
-    def get_emotes(self):
+    def get_emotes(self, channel_name=None):
+       if channel_name != None or channel_name != self.channel_name:
+          self.channel_name = channel_name
+          self.get_channel_url()
        if self.channel_url is None:
-          self.get_channel_url
+          self.get_channel_url()
        self.driver.get(self.channel_url)
        images = self.driver.find_elements(By.CLASS_NAME, 'emote')
        self.emotes = {i.get_attribute('data-regex') : i.get_attribute('src') for i in images}
@@ -43,6 +45,7 @@ class emote_grabber(object):
        
     def close_browser(self):
        self.driver.close()
+       subprocess.run("ps aux | awk /firefox/'{print $2}' | xargs kill", shell=True)
        return False
  
 if __name__ == '__main__':
