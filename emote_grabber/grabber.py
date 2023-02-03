@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
+from time import sleep
 
 class emote_grabber(object):
     def __init__(self, channel_name=None):
@@ -40,7 +41,10 @@ class emote_grabber(object):
        self.emotes = {i.get_attribute('data-regex') : i.get_attribute('src') for i in images}
        return self.emotes
        
-    
+    def close_browser(self):
+       self.driver.quit()
+       return False
+ 
 if __name__ == '__main__':
    eg = emote_grabber()
    eg.get_channel_url('askmartyn')

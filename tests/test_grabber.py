@@ -15,3 +15,5 @@ def test_get_channel_url():
 def test_get_emotes():
     assert EG.get_emotes()[TEST_EMOTE] == TEST_URL
     
+def test_close():
+    assert EG.close_browser() != True
