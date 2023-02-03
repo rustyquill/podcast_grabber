@@ -42,7 +42,7 @@ class emote_grabber(object):
        return self.emotes
        
     def close_browser(self):
-       self.driver.quit()
+       self.driver.close()
        return False
  
 if __name__ == '__main__':
