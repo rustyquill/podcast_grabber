@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: tests
+        name: tests
+        files: \.ipynb$
+        stages: [commit]
+        language: system
+        entry: pytest 
