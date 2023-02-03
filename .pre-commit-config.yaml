@@ -3,7 +3,6 @@ repos:
     hooks:
       - id: tests
         name: tests
-        files: \.ipynb$
         stages: [commit]
         language: system
-        entry: pwd
+        entry: ls
