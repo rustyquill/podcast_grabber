@@ -6,3 +6,4 @@ repos:
         stages: [commit]
         language: system
         entry: ls
+        verbose: true
