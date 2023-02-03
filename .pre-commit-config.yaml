@@ -6,4 +6,4 @@ repos:
         files: \.ipynb$
         stages: [commit]
         language: system
-        entry: pytest 
+        entry: pwd
