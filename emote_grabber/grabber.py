@@ -9,7 +9,6 @@ from selenium.webdriver.chrome.options import Options
 class emote_grabber(object):
     def __init__(self, channel_name=None):
        self.options = Options()
-       self.display = Display(visible=0, size=(1000, 1200))
        self.options.add_argument("--headless")
        # self.driver = webdriver.Firefox(options=self.options)
        self.driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
