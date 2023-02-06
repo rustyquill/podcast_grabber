@@ -11,7 +11,7 @@ class emote_grabber(object):
        self.options = Options()
        self.options.add_argument("--headless")
        # self.driver = webdriver.Firefox(options=self.options)
-       self.driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver')
+       self.driver = webdriver.Chrome('/usr/lib/chromium-browser/chromedriver', options=self.options)
        self.channel_name = channel_name
        self.channel_url = None
        self.emotes      = None 
