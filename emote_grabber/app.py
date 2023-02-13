@@ -1,14 +1,34 @@
 from flask import Flask
 from emote_grabber.grabber import emote_grabber 
+import json
+
 app = Flask(__name__)
 
 eg = emote_grabber()
 
+cache_dir = '/tmp/'
+
+
 @app.route('/<channel_name>')
 def get_emotes(channel_name):
+    cache_hit = check_cache(channel_name)
+    if cache_hit:
+        return cache_hit
     if channel_name == 'favicon.ico' :
        return ''
-    return eg.get_emotes(channel_name)
+    data = eg.get_emotes(channel_name)
+    with open(cache_dir + channel_name) as cache:
+        cache.write(json.dumps(data))
+    return data
+
+def check_cache(channel_name):
+    with open(cache_dir + channel_name) as cache:
+        try:
+           data = json.load(cache)
+        except:
+           print('no cache')
+           return None
+    return data   
 
 
 if __name__ == '__main__':

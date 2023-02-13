@@ -2,7 +2,7 @@ from setuptools import setup
 with open('requirements.txt') as requirements:
    setup(
       name		= 'emote_grabber',
-      version		= '2.8',
+      version		= '2.9',
       packages 		= ['emote_grabber'],
       package_dir	= {'': '.'},
       author		= 'askmartyn',
