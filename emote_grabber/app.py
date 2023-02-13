@@ -12,22 +12,22 @@ cache_dir = '/tmp/'
 @app.route('/<channel_name>')
 def get_emotes(channel_name):
     cache_hit = check_cache(channel_name)
-    if cache_hit:
+    if cache_hit is not None:
         return cache_hit
     if channel_name == 'favicon.ico' :
        return ''
     data = eg.get_emotes(channel_name)
-    with open(cache_dir + channel_name) as cache:
+    with open(cache_dir + channel_name, 'x') as cache:
         cache.write(json.dumps(data))
     return data
 
 def check_cache(channel_name):
-    with open(cache_dir + channel_name) as cache:
-        try:
-           data = json.load(cache)
-        except:
-           print('no cache')
-           return None
+    try:
+       with open(cache_dir + channel_name) as cache:
+          data = json.load(cache)
+    except:
+       print('no cache')
+       return None
     return data   
 
 
