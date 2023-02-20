@@ -2,8 +2,11 @@ import json
 import os
 from flask import Flask, jsonify
 from emote_grabber.grabber import emote_grabber 
+from flask.ext.cors import CORS, cross_origin
+
 
 CACHE_DIR = '/tmp/emotes/'
+cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 
 try:
     os.makedirs(CACHE_DIR)
@@ -55,7 +58,9 @@ def get_emojis(emote_name):
 
 @APP.route('/emotes')
 def get_all_emojis():
-    return jsonify( { "Reponse": [ _ for _ in EMOJI_DICT.keys() ] } )
+    response = jsonify({ "Reponse": [ _ for _ in EMOJI_DICT.keys() ] } )
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 
 def check_cache(channel_name):
