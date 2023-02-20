@@ -70,4 +70,4 @@ def check_cache(channel_name):
     return None
 
 if __name__ == '__main__':
-   APP.run('0.0.0.0', port=5002)
+   APP.run('0.0.0.0', port=5000)
