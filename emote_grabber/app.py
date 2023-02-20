@@ -29,7 +29,7 @@ EMOJI_DICT = create_emoji_dict(CACHE_HITS)
 
 @APP.route('/channels')
 def get_channels():
-    return jsonify( { "Reponse": CACHE_HITS } )
+    return jsonify( { "Response": CACHE_HITS } )
 
 
 
@@ -52,11 +52,13 @@ def get_emotes(channel_name):
 
 @APP.route('/emote/<emote_name>')
 def get_emojis(emote_name):
-    return jsonify({'Response': EMOJI_DICT.get(emote_name)})
+    response =  jsonify({'Response': EMOJI_DICT.get(emote_name)}
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
 
 @APP.route('/emotes')
 def get_all_emojis():
-    response = jsonify({ "Reponse": [ _ for _ in EMOJI_DICT.keys() ] } )
+    response = jsonify({ "Response": [ _ for _ in EMOJI_DICT.keys() ] } )
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
