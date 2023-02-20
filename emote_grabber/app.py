@@ -2,11 +2,9 @@ import json
 import os
 from flask import Flask, jsonify
 from emote_grabber.grabber import emote_grabber 
-from flask.ext.cors import CORS, cross_origin
 
 
 CACHE_DIR = '/tmp/emotes/'
-cors = CORS(app, resources={r"/foo": {"origins": "*"}})
 
 try:
     os.makedirs(CACHE_DIR)
@@ -72,4 +70,4 @@ def check_cache(channel_name):
     return None
 
 if __name__ == '__main__':
-   APP.run('0.0.0.0', port=5001)
+   APP.run('0.0.0.0', port=5002)
