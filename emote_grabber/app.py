@@ -52,7 +52,7 @@ def get_emotes(channel_name):
 
 @APP.route('/emote/<emote_name>')
 def get_emojis(emote_name):
-    response =  jsonify({'Response': EMOJI_DICT.get(emote_name)}
+    response =  jsonify({'Response': EMOJI_DICT.get(emote_name), 'Name': emote_name}
     response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
