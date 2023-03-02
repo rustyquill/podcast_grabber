@@ -1,11 +1,11 @@
 from setuptools import setup
 with open('requirements.txt') as requirements:
    setup(
-      name		= 'emote_grabber',
-      version		= '3.7',
-      packages 		= ['emote_grabber'],
+      name		= 'podcast_grabber',
+      version		= '1',
+      packages 		= ['podcast_grabber'],
       package_dir	= {'': '.'},
       author		= 'askmartyn',
-      description	= 'Selenium based too for importing channel twitch emotes',
+      description	= 'Selenium based too for reporting on locations of our podcasts in various suppliers',
       install_requires	= [ req for req in requirements.readlines()]
    )
