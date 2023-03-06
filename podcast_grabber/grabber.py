@@ -1,6 +1,7 @@
 import subprocess
 from pprint import pprint
 from time import sleep
+from csv_maker import dict_2D
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
@@ -169,14 +170,18 @@ class podcast_grabber(object):
        self.get_stitcher()
        self.get_google()
        return self.podcast_object
-       
+      
+    def write_csv(self):
+       dict_2D(self.podcast_object,self.podcast_name)
+        
     def close_browser(self):
        self.driver.close()
        subprocess.run("ps aux | awk /firefox/'{print $2}' | xargs kill", shell=True)
        return False
  
 if __name__ == '__main__':
-   for p in ['the magnus archives', 'rusty quill gaming podcast', 'stellar firma', '"outliers - stories from the edge of history"', '"enthusigasm"']:
-      pg = podcast_grabber(p)
-      pprint(pg.get_all_platforms()) 
-
+   p_object = {}
+   for p in ['the magnus archives', 'rusty quill gaming podcast']:# 'stellar firma', '"outliers - stories from the edge of history"', '"enthusigasm"']:
+      pg = podcast_grabber(p, p_object)
+      pg.get_all_platforms() 
+   pg.write_csv()
