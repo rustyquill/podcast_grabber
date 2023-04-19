@@ -9,15 +9,21 @@ from selenium.webdriver.chrome.options import Options
 
 class podcast_grabber(object):
     def __init__(self, podcast_name=None, podcast_object={}):
-       self.options = Options()
        #self.options.add_argument("--headless")
        #self.options.add_argument("browser.link.open_newwindow", 0)
-       self.driver = webdriver.Chrome(options=self.options)
        self.podcast_name = podcast_name
        self.podcast_object = podcast_object
+       self.create_driver()
+       
+    def create_driver(self):
+       self.options = Options()
+       self.driver = webdriver.Chrome(options=self.options)
        self.googled_once = False
+       self.driver.set_page_load_timeout(40)
+       self.driver.implicitly_wait(5)
        
     def update_podcast_object(self, update):
+       
        if self.podcast_object.get(self.podcast_name):
           self.podcast_object[self.podcast_name].update(update)
        else:
@@ -44,6 +50,7 @@ class podcast_grabber(object):
           return self.try_google("stitcher")
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://www.stitcher.com/search/{}'.format(self.podcast_name))
        try:
           button = clickable = self.driver.find_element(By.ID, "onetrust-accept-btn-handler")
@@ -67,6 +74,7 @@ class podcast_grabber(object):
           button.click()
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://podcasts.google.com/search/{}'.format(self.podcast_name))
        clickables = self.driver.find_elements(By.CSS_SELECTOR, "img")
        for i in clickables:
@@ -85,6 +93,7 @@ class podcast_grabber(object):
           return self.try_google("playerfm")
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://player.fm/search/{}'.format(self.podcast_name))
        articles = self.driver.find_elements(By.CLASS_NAME, "record")
        for i in articles:
@@ -99,21 +108,24 @@ class podcast_grabber(object):
              break
           except Exception as e:
              print(e)
+             self.create_driver()
           try:
              clickable = i.find_element(By.CSS_SELECTOR, 'img')
              clickable.click()
              break
           except Exception as e:
              print(e)
+             self.create_driver()
        #sleep(5)
        self.update_podcast_object({'playerfm' : self.driver.current_url})
        return self.podcast_object
 
     def get_podchaser(self):
        try: 
-          return self.try_google("podchaserfm")
+          return self.try_google("podchaser")
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://www.podchaser.com/search/podcasts/q/{}'.format(self.podcast_name))
        clickables = self.driver.find_elements(By.CSS_SELECTOR, "[data-id='entity-card-title']")
        for i in clickables:
@@ -131,6 +143,7 @@ class podcast_grabber(object):
           return self.try_google("podbean")
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://podbean.com/site/search/index?v={}'.format(self.podcast_name.replace(" ", "+")))
        clickables = self.driver.find_elements(By.CLASS_NAME, "pic")
        for i in clickables:
@@ -149,6 +162,7 @@ class podcast_grabber(object):
           return self.try_google("apple")
        except Exception as e:
           print(e)
+          self.create_driver()
        self.driver.get('https://www.apple.com/uk/search/{}?src=globalnav'.format(self.podcast_name.replace(" ", "-")))
        elements = self.driver.find_elements(By.CLASS_NAME, "rf-serp-explore-curated")
        for i in elements:
@@ -158,21 +172,53 @@ class podcast_grabber(object):
              break
           except Exception as e:
              print(e)
+             self.create_driver()
        sleep(5)
        self.update_podcast_object({'apple' : self.driver.current_url})
        return self.podcast_object
 
+    def get_castbox(self):
+       try: 
+          return self.try_google("castbox")
+       except Exception as e:
+          print(e)
+       return self.podcast_object
+
+    def get_pocket_casts(self):
+       try: 
+          return self.try_google("pocket casts")
+       except Exception as e:
+          print(e)
+       return self.podcast_object
+    
+    def get_podcast_republic(self):
+       try: 
+          return self.try_google("podcast republic")
+       except Exception as e:
+          print(e)
+       return self.podcast_object
+    
     def get_all_platforms(self):
-       self.get_apple()
-       self.get_podbean()
-       self.get_playerfm()
-       self.get_podchaser()
-       self.get_stitcher()
-       self.get_google()
+       for func in [ 
+          self.get_apple,
+          self.get_podbean,
+          self.get_playerfm,
+          self.get_podchaser,
+          self.get_stitcher,
+          self.get_google,
+          self.get_castbox,
+	  self.get_pocket_casts,	
+          self.get_podcast_republic
+          ]:
+          func()
+          self.create_driver()
        return self.podcast_object
       
-    def write_csv(self):
-       dict_2D(self.podcast_object,self.podcast_name)
+    def write_csv(self, filename=None):
+       if filename is None:
+          dict_2D(self.podcast_object,self.podcast_name)
+       else:
+          dict_2D(self.podcast_object, self.podcast_name, filename=filename)
         
     def close_browser(self):
        self.driver.close()
@@ -181,7 +227,11 @@ class podcast_grabber(object):
  
 if __name__ == '__main__':
    p_object = {}
-   for p in ['the magnus archives', 'rusty quill gaming podcast']:# 'stellar firma', '"outliers - stories from the edge of history"', '"enthusigasm"']:
+   podcasts = ['the magnus archives', 'rusty quill gaming podcast', 'stellar firma', '"outliers - stories from the edge of history"', '"enthusigasm"']
+   for p in ["trice forgotten", "chapter and multiverse"]:
+      print('starting ' + p) 
       pg = podcast_grabber(p, p_object)
       pg.get_all_platforms() 
+      pg.write_csv(filename = p + '.csv')
+      print(p)
    pg.write_csv()

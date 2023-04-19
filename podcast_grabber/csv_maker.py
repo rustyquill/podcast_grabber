@@ -19,7 +19,7 @@ def dict_2D(a_dict,heading_key, filename='~/Documents/report.csv'):
           for key in headings:
              print(key)
              print(a_dict)
-             row.append(a_dict[each_item][key])
+             row.append(a_dict[each_item].get(key))
           writer.writerow(row)
 
 
